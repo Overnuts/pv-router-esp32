@@ -217,8 +217,10 @@ void drawtext16(int width,int height, String text ){
   #endif
   
   #ifdef  TTGO
-    display.setCursor(width, height, 2); display.setTextSize(2);
-    display.setTextColor(TFT_WHITE,TFT_BLACK);  display.setTextFont(2);
+    display.setTextFont(2);
+    display.setTextSize(2);
+    display.setTextColor(TFT_WHITE,TFT_BLACK);  
+    display.setCursor(width, height, 2); 
     display.print(String(text));
   #endif
 
@@ -245,8 +247,9 @@ void drawtext10(int width,int height, String text  ){
 
   #ifdef  TTGO
     display.setTextFont(3);
-    display.setCursor(width, height, 2);
-    display.setTextColor(TFT_WHITE,TFT_BLACK);  display.setTextSize(2);
+    display.setTextSize(2);
+    display.setTextColor(TFT_WHITE,TFT_BLACK);  
+    display.setCursor(width, height, 2);    
     display.print(String(text));
   #endif
 
@@ -254,16 +257,20 @@ void drawtext10(int width,int height, String text  ){
 
 void drawtext16TTGO(int width,int height, String text, int color ){
 #ifdef  TTGO  
-    display.setCursor(width, height, 2); display.setTextSize(2);
-    display.setTextColor(color,TFT_BLACK);  display.setTextFont(4);
+    display.setTextFont(4);
+    display.setTextSize(2);
+    display.setTextColor(color,TFT_BLACK);  
+    display.setCursor(width, height, 2); 
     display.print(String(text));
 #endif
 }
 
 void drawtext10TTGO(int width,int height, String text, int color ){
-#ifdef  TTGO  
+#ifdef  TTGO 
+    display.setTextFont(4);
+    display.setTextSize(2);
+    display.setTextColor(color,TFT_BLACK);    
     display.setCursor(width, height, 2); 
-    display.setTextColor(color,TFT_BLACK);    display.setTextSize(2);
     display.print(String(text));
 #endif
 }
