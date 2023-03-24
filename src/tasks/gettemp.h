@@ -5,59 +5,51 @@
 
 #include "../config/config.h"
 #include "../config/enums.h"
-#include "../functions/Mqtt_http_Functions.h"
+
 #include "HTTPClient.h"
 
 HTTPClient httpdimmer;
 
 extern DisplayValues gDisplayValues;
 extern Config config; 
-extern Dallas dallas ;
 
 void GetDImmerTemp(void * parameter){
- for (;;){ 
-// create get request 
+  for (;;){ 
 
-if ( !dallas.detect) {
-    String baseurl; 
-      baseurl = "/state" ; 
-      httpdimmer.begin(String(config.dimmer),80,baseurl);   
+#if DALLAS
+    extern Dallas dallas ;
+    if ( !dallas.detect) {
+#endif // DALLAS
+
+      // create get request 
+      httpdimmer.begin(String(config.dimmer), 80, "/state");   
       int httpResponseCode = httpdimmer.GET();
 
-      String dimmerstate = ""; 
+      //  read request return
+      if (httpResponseCode > 0) {
+        String dimmerstate = httpdimmer.getString();
+        dimmerstate = dimmerstate.substring( dimmerstate.indexOf(";") + 1);
+        gDisplayValues.temperature = dimmerstate.substring( 0, dimmerstate.indexOf(";") ) ; 
+        if (logging.serial) {
+          Serial.println("gettemp HTTP Response code: " + httpResponseCode);
+          Serial.println("recu :" + dimmerstate );
+          Serial.println("temperature " + gDisplayValues.temperature );
+        }
+      } else {
+        if (logging.serial) {
+          Serial.println("Get Dimmer temp : Error code: " + httpResponseCode);
+        }
+      }
+      // Free resources
+      httpdimmer.end();
 
-//  read request return
-  if (httpResponseCode>0) {
-    if (logging.serial){
-    Serial.print("gettemp HTTP Response code: ");
-    Serial.println(httpResponseCode);
+#if DALLAS
     }
-    dimmerstate = httpdimmer.getString();
-  }
-  else {
-    Serial.print("Get Dimmer temp : Error code: ");
-    Serial.println(httpResponseCode);
-  }
-  // Free resources
-  httpdimmer.end();
-
-
-// hash temp 
-int starttemp = dimmerstate.indexOf(";"); 
-dimmerstate = dimmerstate.substring(starttemp+1);
-int lasttemp = dimmerstate.indexOf(";"); 
-dimmerstate[lasttemp] = '\0'; 
-
-gDisplayValues.temperature = dimmerstate; 
-  if (logging.serial){
-  Serial.println("temperature " + dimmerstate);
-  }
-}
+#endif  // DALLAS
 
 // refresh every GETTEMPREFRESH seconds 
 vTaskDelay(pdMS_TO_TICKS(15000));
   }
-
 }
 
 #endif
