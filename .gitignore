@@ -62,3 +62,7 @@ test/*
 .vscode/c_cpp_properties.json
 .pio/build/esp32doit-devkit-v1/firmware.bin
 .pio/build/esp32doit-devkit-v1/.sconsign37.dblite
+.pio/build/esp32doit-devkit-v1/firmware.bin
+.pio/build/esp32doit-devkit-v1/partitions.bin
+.vscode/extensions.json
+.vscode/c_cpp_properties.json
