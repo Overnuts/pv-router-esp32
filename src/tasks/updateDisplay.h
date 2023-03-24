@@ -84,7 +84,7 @@ void updateDisplay(void* parameter) {
             drawtext16(64, 30, String(OLEDNOSIN));
           #endif
           #ifdef TTGO
-            drawtext16(120, 70, String(OLEDNOSIN));
+            drawtext16TTGO(120, 70, String(OLEDNOSIN), TFT_ORANGE);            
           #endif
 
           gDisplayValues.dimmer = 0;  /// mise à zero du dimmer par sécurité
